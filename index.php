@@ -19,20 +19,13 @@ define('ENV', array_column(
 	0
 ));
 
-define('INPUT', file_get_contents("php://input"));
+define('INPUT', json_decode(file_get_contents('php://input'), TRUE));
 
 $constant = 'constant';
 
-if ($_SERVER["REMOTE_ADDR"] !== "34.239.126.103" || $_SERVER["REMOTE_PORT"] !== "55494" || INPUT['API_ACCESS_KEY'] !== ENV['API_ACCESS_KEY']) {
+if (INPUT['API_ACCESS_KEY'] !== ENV['API_ACCESS_KEY']) {
 	header('HTTP/1.0 403 Forbidden');
-	die(<<<_END
-Checks:
-	{$_SERVER["REMOTE_ADDR"]}
-	{$_SERVER["REMOTE_PORT"]}
-	{$constant("INPUT")['API_ACCESS_KEY']}
-
-Access Denied
-_END);
+	die("Access Denied");
 }
 
 require_once "../mysql.php";
