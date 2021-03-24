@@ -19,7 +19,7 @@ define('ENV', array_column(
 	0
 ));
 
-define('INPUT', stream_get_contents(STDIN));
+define('INPUT', file_get_contents("php://input"));
 
 $constant = 'constant';
 
@@ -30,6 +30,7 @@ Checks:
 	{$_SERVER["REMOTE_ADDR"]}
 	{$_SERVER["REMOTE_PORT"]}
 	{$constant("INPUT")['API_ACCESS_KEY']}
+
 Access Denied
 _END);
 }
