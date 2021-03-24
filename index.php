@@ -21,13 +21,15 @@ define('ENV', array_column(
 
 define('INPUT', stream_get_contents(STDIN));
 
-if ($_SERVER["REMOTE_ADDR"] !== "34.239.126.103" || $_SERVER["REMOTE_PORT"] !== "55494" || INPUT['API_ACCESS_KEY'] === ENV['API_ACCESS_KEY']) {
+$constant = 'constant';
+
+if ($_SERVER["REMOTE_ADDR"] !== "34.239.126.103" || $_SERVER["REMOTE_PORT"] !== "55494" || INPUT['API_ACCESS_KEY'] !== ENV['API_ACCESS_KEY']) {
 	header('HTTP/1.0 403 Forbidden');
 	die(<<<_END
 Checks:
 	{$_SERVER["REMOTE_ADDR"]}
 	{$_SERVER["REMOTE_PORT"]}
-	{$_POST['API_ACCESS_KEY']}
+	{$constant("INPUT")['API_ACCESS_KEY']}
 Access Denied
 _END);
 }
