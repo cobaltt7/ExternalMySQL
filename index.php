@@ -29,6 +29,21 @@ if (INPUT['API_ACCESS_KEY'] !== ENV['API_ACCESS_KEY']) {
 }
 
 require_once "../mysql.php";
+
+$result = $mysql->query(INPUT['query']);
+if ($result === TRUE) {
+	echo "{success: true}";
+} else if ($result === FALSE) {
+	echo "{success: false}";
+} else if ($result->num_rows !== 0) {
+	$return = array(success => TRUE);
+	while ($row = mysqli_fetch_assoc($qry)) {
+		$return[] = $row;
+	}
+
+	echo json_encode($return);
+}
+
 if (!$mysql->close()) {
-	die('Closing MySQL failed');
+	die;
 }
