@@ -20,6 +20,12 @@ define('ENV', array_column(
 ));
 if ($_SERVER["REMOTE_ADDR"] !== "34.239.126.103" || $_SERVER["REMOTE_PORT"] !== "55494" || $_POST['API_ACCESS_KEY'] === ENV['API_ACCESS_KEY']) {
 	header('HTTP/1.0 403 Forbidden');
+	echo <<<_END
+Checks:
+	{$_SERVER["REMOTE_ADDR"]}
+	{$_SERVER["REMOTE_PORT"]}
+	{$_POST['API_ACCESS_KEY']}
+_END;
 	die("Access Denied");
 }
 
