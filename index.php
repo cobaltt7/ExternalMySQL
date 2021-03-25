@@ -21,8 +21,6 @@ define('ENV', array_column(
 
 define('INPUT', json_decode(file_get_contents('php://input'), TRUE));
 
-$constant = 'constant';
-
 if (INPUT['API_ACCESS_KEY'] !== ENV['API_ACCESS_KEY']) {
 	header('HTTP/1.0 403 Forbidden');
 	die("Access Denied");
@@ -33,15 +31,18 @@ require_once "../mysql.php";
 $result = $mysql->query(INPUT['query']);
 if ($result === TRUE) {
 	echo "{success: true}";
-} else if ($result === FALSE) {
-	echo "{success: false}";
-} else if ($result->num_rows !== 0) {
-	$return = array(success => TRUE);
-	while ($row = mysqli_fetch_assoc($qry)) {
+} else if ($result !== FALSE && $result->num_rows !== 0) {
+	$return = array("success" => TRUE);
+	while ($row = $result->fetch_assoc()) {
 		$return[] = $row;
 	}
 
 	echo json_encode($return);
+	if (!$result->close()) {
+		die;
+	}
+} else {
+	echo "{success: false}";
 }
 
 if (!$mysql->close()) {
